@@ -1,7 +1,7 @@
-t
+Converting my Loans Dataset work into PySpark form
 ==============================
 
-Loan app prediction with spark
+Loan application prediction with Spark/PySpark
 
 Project Organization
 ------------
