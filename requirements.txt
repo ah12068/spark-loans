@@ -1,0 +1,25 @@
+# local package
+-e .
+
+# external requirements
+click
+coverage
+flake8
+imbalanced-learn
+jupyter
+jupyter_contrib_nbextensions
+jupyter_nbextensions_configurator
+kaggle
+matplotlib
+mkdocs
+numpy
+pandas
+python-dotenv>=0.5.1
+plotly
+pyspark
+scikit-learn
+seaborn
+streamlit
+yellowbrick
+
+

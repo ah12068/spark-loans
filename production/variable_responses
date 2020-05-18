@@ -1,0 +1,8 @@
+# This script lists out possible values which variables can take
+
+v1_vals = ["value1", "value2"]
+v2_vals = ["value1", "value2", "value3", "value4"]
+v3_vals = ["value1", "value2", "value3", "value4"]
+
+v4_range_start = 1
+v4_range_end = 5
