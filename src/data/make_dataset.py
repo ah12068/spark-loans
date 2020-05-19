@@ -30,6 +30,14 @@ def main(name):
     data = make_col_numeric(data, 'credit_score')
     data = truncate_credit_line(data, 'earliest_credit_line')
 
+    logger.info(f'Re-categorising categorical variables')
+    data = categorise_employment_length(data, spark)
+    data = categorise_home_ownership(data, spark)
+    data = categorise_inquiry(data, spark)
+    data = categorise_purpose(data, spark)
+
+    logger.info(f'Imputing variables')
+    data =
 
 
 
