@@ -47,6 +47,10 @@ def truncate_credit_line(data, column):
     return data.withColumn(column, F.split(F.col(column), '-')[1])
 
 
+def truncate_term(data, column):
+    return data.withColumn(column, F.split(F.col(column), ' ')[1])
+
+
 def categorise_employment_length(data, spark_session):
     name = categorical_vars['employment_length']
     data.createTempView(name)
@@ -103,7 +107,7 @@ def categorise_home_ownership(data, spark_session):
     name = categorical_vars['home_ownership']
     data.createTempView(name)
 
-    spark_session.sql(
+    data = spark_session.sql(
         f"""
     select
     account_id,

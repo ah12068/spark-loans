@@ -1,6 +1,8 @@
 import logging
+from os import path as p
+import shutil as s
 from pyspark.sql import SparkSession
-from constants import path
+from constants import path, columns_to_drop
 from functions import *
 
 
@@ -23,9 +25,13 @@ def main(name='Clean_loans'):
     data = remove_whitespace(data)
 
     logger.info(f'Cleaning data types')
+    data = truncate_credit_line(data, 'earliest_credit_line')
+    data = truncate_term(data, 'term')
+    data = make_col_numeric(data, 'earliest_credit_line')
+    data = make_col_numeric(data, 'term')
     data = make_col_numeric(data, 'annual_income')
     data = make_col_numeric(data, 'credit_score')
-    data = truncate_credit_line(data, 'earliest_credit_line')
+
 
     logger.info(f'Re-categorising categorical variables')
     data = categorise_employment_length(data, spark)
@@ -40,7 +46,8 @@ def main(name='Clean_loans'):
     data = create_credit_age(data, spark, 2015)
     data = create_binary_class(data, spark)
 
-    logger.info(f'Dropping samples')
+    logger.info(f'Dropping redundant variables and NA samples')
+    data = data.drop(*columns_to_drop['drop'])
     data = data.na.drop()
 
     new_size = data.count()
@@ -49,6 +56,10 @@ def main(name='Clean_loans'):
                 f'Row Difference: {initial_size - new_size}')
 
     output_filepath = f'../../data/interim/loans_clean_spark'
+
+    if p.exists(output_filepath):
+        s.rmtree(output_filepath)
+
     data.repartition(1).write.format('csv').save(f"{output_filepath}", header='true')
     logger.info(f'Clean data exported to {output_filepath}')
 
