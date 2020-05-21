@@ -1,13 +1,5 @@
 FCA take home assessment - PySpark version
-==============================
-
-### Create your data folders
-
-Place raw data `loans_raw.csv` in `data/raw` 
-
-Place a copy of the raw data called `loans_int.csv` in `data/interim` 
-
-Place external data in `data/external` see `references/external_data_sources.txt` to download data and rename to `district_mapper.csv` 
+============================== 
 
 ### Install packages:
 From root directory
