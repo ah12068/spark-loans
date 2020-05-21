@@ -1,4 +1,4 @@
-path = f'../data/interim/loans_clean_spark/part-*.csv'
+path = f'../../data/interim/loans_clean_spark/part-*.csv'
 
 distinct_count = 'distinct_count'
 

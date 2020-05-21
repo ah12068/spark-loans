@@ -1,7 +1,7 @@
 import logging
+import shutil as s
 from os import path as p
 from pyspark.sql import SparkSession
-from pyspark.ml.feature import VectorAssembler
 from constants import path, target, Id
 from functions import *
 
@@ -39,9 +39,12 @@ def main(name='Loan_features'):
 
     data = data.drop(*Id)
 
+    output_filepath = f'../../data/processed/loans_spark'
+    if p.exists(output_filepath):
+        s.rmtree(output_filepath)
 
-    output_file_path = f'../../data/processed/'
-    logger.info(f'Data exported to {output_file_path}')
+    data.repartition(1).write.format('csv').save(f"{output_filepath}", header='true')
+    logger.info(f'Data exported to {output_filepath}')
 
 
 if __name__ == '__main__':

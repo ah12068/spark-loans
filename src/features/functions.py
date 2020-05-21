@@ -4,6 +4,7 @@ from constants import (
     distinct_count
 )
 from pyspark.ml.feature import StringIndexer, MinMaxScaler, VectorAssembler
+from pyspark.sql.types import DoubleType
 from pyspark.sql import functions as F
 
 
@@ -41,17 +42,23 @@ def create_dummies(data, identifier, column):
 
 def min_max_scale(data, column):
     feature_name = f'feature_{column}'
+    scaled_name = f'scaled_{column}_vec'
     feature_assembler = VectorAssembler(
         inputCols=[column],
         outputCol=feature_name
     )
     scaler = MinMaxScaler(
         inputCol=feature_name,
-        outputCol=f'scaled_{column}'
+        outputCol=scaled_name
     )
     assembler = feature_assembler.transform(data)
     model = scaler.fit(assembler)
     encoded_data = model.transform(assembler)
-    encoded_data = encoded_data.drop(*[column, feature_name])
+
+    unlist = F.udf(lambda x: float(list(x)[0]), DoubleType())
+    correct_datatype_col = f'scaled_{column}'
+    encoded_data = encoded_data.withColumn(correct_datatype_col, unlist(f'{scaled_name}'))
+
+    encoded_data = encoded_data.drop(*[column, feature_name, scaled_name])
 
     return encoded_data
