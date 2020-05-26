@@ -1,6 +1,4 @@
 import logging
-import shutil as s
-from os import path as p
 from pyspark.sql import SparkSession
 from pyspark.ml.pipeline import PipelineModel
 from constants import path, target, output_path
