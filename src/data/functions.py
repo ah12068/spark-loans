@@ -34,7 +34,7 @@ def remove_whitespace(data):
 
     for column in data_dtypes.keys():
         if data_dtypes[column] == 'string':
-            data = data.withColumn(column, F.lower(F.col(column)))
+            data = data.withColumn(column, F.trim(F.col(column)))
 
     return data
 
